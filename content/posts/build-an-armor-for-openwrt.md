@@ -1,31 +1,28 @@
 ---
-title: "我给Openwrt做盔甲"
-date: 2021-02-22T23:42:59+08:00
-
-
+title: "我给Openwrt作盔甲"
+date: 2021-02-23T12:55:40+08:00
+draft: true
+# weight: 1
+# aliases: ["/first"]
 tags: ["openwrt"]
 author: "ryohuang"
-# author: ["Me", "You"] # multiple authors
 showToc: true
 TocOpen: false
-draft: false
 hidemeta: false
-comments: true
-description: "all about my router"
+comments: false
+description: "不会做盔甲的码农不是一个合格的矿工"
 disableHLJS: true # to disable highlightjs
 disableShare: false
 disableHLJS: false
 searchHidden: true
 cover:
-    image: "/img/armor-armor-m-tachaux-armoer-in-chief-of-metropolitan-museum-of-art-new-york-aeb860-1600.jpg" # image path/url
+    image: "/img/armor-armor-m-tachaux-armoer-in-chief-of-metropolitan-museum-of-art-new-york-aeb860-1600.jpg"
     alt: "<alt text>" # alt text
     caption: "<text>" # display caption under cover
     relative: false # when using page bundles set this to true
     hidden: false # only hide on current single page
+
 ---
 
+# 缘起
 
-# 动机
-
-
-....
