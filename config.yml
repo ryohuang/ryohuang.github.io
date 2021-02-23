@@ -24,7 +24,7 @@ params:
     defaultTheme: auto # dark, light
     disableThemeToggle: false
 
-    ShowReadingTime: true
+    ShowReadingTime: false
     ShowShareButtons: true
     disableSpecial1stPost: false
     comments: false
@@ -63,7 +63,7 @@ params:
 
     # home-info mode
     homeInfoParams:
-        Title: "极客长斋 \U0001F44B"
+        Title: "极客长斋"
         Content: Geek的折腾，枯燥平常如长斋。
 
     socialIcons:
