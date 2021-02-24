@@ -1,0 +1,185 @@
+baseURL = "https://ryohuang.github.io"
+# [en, zh-cn, fr, ...] determines default content language
+defaultContentLanguage = "zh-cn"
+# language code
+languageCode = "zh-cn"
+title = "极客长斋"
+
+# Change the default theme to be use when building the site with Hugo
+theme = "LoveIt"
+
+# whether to use robots.txt
+# 是否使用 robots.txt
+enableRobotsTXT = true
+# whether to use git commit log
+# 是否使用 git 信息
+enableGitInfo = true
+# whether to use emoji code
+# 是否使用 emoji 代码
+enableEmoji = true
+
+[languages]
+  [languages.zh-cn]
+    weight = 2
+    title = "极客长斋"
+    # 网站语言, 仅在这里 CN 大写
+    languageCode = "zh-CN"
+    languageName = "简体中文"
+    # 是否包括中日韩文字
+    hasCJKLanguage = true
+    [[languages.zh-cn.menu.main]]
+      identifier = "posts"
+      pre = ""
+      post = ""
+      name = "文章"
+      url = "/posts/"
+      title = ""
+      weight = 1
+    [[languages.zh-cn.menu.main]]
+      identifier = "tags"
+      pre = ""
+      post = ""
+      name = "标签"
+      url = "/tags/"
+      title = ""
+      weight = 2
+    [[languages.zh-cn.menu.main]]
+      identifier = "categories"
+      pre = ""
+      post = ""
+      name = "分类"
+      url = "/categories/"
+      title = ""
+      weight = 3
+
+[params]
+  # LoveIt theme version
+  version = "0.2.X"
+  # site default theme ("light", "dark", "auto")
+  defaultTheme = "auto"
+  dateFormat = "2006-01-02"
+ # 主页配置
+  [params.home]
+    # LoveIt 新增 | 0.2.0 RSS 文章数目
+    rss = 10
+    # 主页个人信息
+    [params.home.profile]
+      enable = true
+      # 主页显示头像的 URL
+      avatarURL = "/img/avatar.png"
+      # LoveIt 更改 | 0.2.7 主页显示的网站标题 (支持 HTML 格式)
+      title = ""
+      # 主页显示的网站副标题
+      subtitle = "极客的折腾，枯燥平常如长斋。"
+      # 是否为副标题显示打字机动画
+      typeit = true
+      # 是否显示社交账号
+      social = true
+      # LoveIt 新增 | 0.2.0 免责声明 (支持 HTML 格式)
+      disclaimer = ""
+    # 主页文章列表
+    [params.home.posts]
+      enable = true
+      # 主页每页显示文章数量
+      paginate = 6
+      # LoveIt 删除 | 0.2.0 被 params.page 中的 hiddenFromHomePage 替代
+      # 当你没有在文章前置参数中设置 "hiddenFromHomePage" 时的默认行为
+      defaultHiddenFromHomePage = false
+[params.social]
+  [params.social.GitHub]
+    id = "ryohuang"
+  [params.social.zhihu]
+    id = "huang-an-yi"
+  [params.social.email]
+    id = "anyisdad@icloud.com"
+
+    # Analytics config
+  # 网站分析配置
+  [params.analytics]
+    enable = false
+    # Google Analytics
+    [params.analytics.google]
+      id = "G-FW15WYEBC7"
+      # whether to anonymize IP
+      # 是否匿名化用户 IP
+      anonymizeIP = true
+    # Fathom Analytics
+    [params.analytics.fathom]
+      id = ""
+      # server url for your tracker if you're self hosting
+      # 自行托管追踪器时的主机路径
+      server = ""
+  [params.page]
+    # whether to hide a page from home page
+    # 是否在主页隐藏一篇文章
+    hiddenFromHomePage = false
+  [params.page.share]
+      enable = true
+      Twitter = true
+      Facebook = true
+      Linkedin = false
+      Whatsapp = false
+      Pinterest = false
+      Tumblr = false
+      HackerNews = true
+      Reddit = false
+      VK = false
+      Buffer = false
+      Xing = false
+      Line = true
+      Instapaper = false
+      Pocket = false
+      Digg = false
+      Stumbleupon = false
+      Flipboard = false
+      Weibo = true
+      Renren = false
+      Myspace = false
+      Blogger = false
+      Baidu = false
+      Odnoklassniki = false
+      Evernote = false
+      Skype = false
+      Trello = false
+      Mix = false
+[menu]
+  [[menu.main]]
+    identifier = "posts"
+    # you can add extra information before the name (HTML format is supported), such as icons
+    pre = ""
+    # you can add extra information after the name (HTML format is supported), such as icons
+    post = ""
+    name = "Posts"
+    url = "/posts/"
+    # title will be shown when you hover on this menu link
+    title = ""
+    weight = 1
+  [[menu.main]]
+    identifier = "tags"
+    pre = ""
+    post = ""
+    name = "Tags"
+    url = "/tags/"
+    title = ""
+    weight = 2
+  [[menu.main]]
+    identifier = "categories"
+    pre = ""
+    post = ""
+    name = "Categories"
+    url = "/categories/"
+    title = ""
+    weight = 3
+
+# Markup related configuration in Hugo
+[markup]
+  # Syntax Highlighting (https://gohugo.io/content-management/syntax-highlighting)
+  [markup.highlight]
+    # false is a necessary configuration (https://github.com/dillonzq/LoveIt/issues/158)
+    noClasses = false
+
+[author]
+  name = "ryohuang"
+  email = "anyisdad@icloud.com"
+  link = "https://ryohuang.github.io/"
+
