@@ -4,16 +4,6 @@
     <title>极客长斋</title>
     <link>https://ryohuang.github.io/</link>
     <description>Recent content on 极客长斋</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <lastBuildDate>Mon, 22 Feb 2021 23:42:59 +0800</lastBuildDate><atom:link href="https://ryohuang.github.io/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>我给Openwrt做盔甲</title>
-      <link>https://ryohuang.github.io/posts/my-first-post2/</link>
-      <pubDate>Mon, 22 Feb 2021 23:42:59 +0800</pubDate>
-      
-      <guid>https://ryohuang.github.io/posts/my-first-post2/</guid>
-      <description>动机 &amp;hellip;.</description>
-    </item>
-    
+    <generator>Hugo -- gohugo.io</generator><atom:link href="https://ryohuang.github.io/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>
