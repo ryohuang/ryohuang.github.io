@@ -1,18 +1,13 @@
 baseURL = "https://ryohuang.github.io"
-# [en, zh-cn, fr, ...] determines default content language
 defaultContentLanguage = "zh-cn"
-# language code
 languageCode = "zh-cn"
 title = "极客长斋"
 
-# Change the default theme to be use when building the site with Hugo
 theme = "LoveIt"
 
 # whether to use robots.txt
-# 是否使用 robots.txt
 enableRobotsTXT = true
 # whether to use git commit log
-# 是否使用 git 信息
 enableGitInfo = true
 # whether to use emoji code
 # 是否使用 emoji 代码
@@ -58,7 +53,12 @@ enableEmoji = true
   # site default theme ("light", "dark", "auto")
   defaultTheme = "auto"
   dateFormat = "2006-01-02"
- # 主页配置
+  [params.footer]
+    enable = true
+    # {{< version 0.2.0 >}} 自定义内容 (支持 HTML 格式)
+    custom = ''
+    license = '<a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a>'
+
   [params.home]
     # LoveIt 新增 | 0.2.0 RSS 文章数目
     rss = 10
@@ -179,7 +179,7 @@ enableEmoji = true
     noClasses = false
 
 [author]
-  name = "ryohuang"
+  name = "R.Huang/阿黄"
   email = "anyisdad@icloud.com"
   link = "https://ryohuang.github.io/"
 
