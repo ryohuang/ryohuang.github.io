@@ -113,6 +113,14 @@ enableEmoji = true
     # whether to hide a page from home page
     # 是否在主页隐藏一篇文章
     hiddenFromHomePage = false
+  [params.page.comment]
+      enable = true
+      # Disqus comment config
+      [params.page.comment.disqus]
+        # LoveIt NEW | 0.1.1
+        enable = true
+        # Disqus shortname to use Disqus in posts
+        shortname = "ryohuang"
   [params.page.share]
       enable = true
       Twitter = true
@@ -128,7 +136,7 @@ enableEmoji = true
       Xing = false
       Line = true
       Instapaper = false
-      Pocket = false
+      Pocket = true
       Digg = false
       Stumbleupon = false
       Flipboard = false
