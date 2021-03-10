@@ -5,7 +5,7 @@ date: 2021-02-25T22:08:19+08:00
 lastmod: 2021-02-25T22:08:19+08:00
 draft: true
 author: ""
-authorLink: ""
+authorLink: "https://ryohuang.github.io"
 description: "slim-wrt的应用场景"
 
 tags: ["openwrt","slim-wrt"]
@@ -14,7 +14,7 @@ categories: []
 hiddenFromHomePage: false
 hiddenFromSearch: false
 
-featuredImage: "img/featured.jpg"
+featuredImage: "img/network-2402637.jpg"
 featuredImagePreview: ""
 
 toc:
@@ -36,10 +36,10 @@ license: '<a rel="license external nofollow noopener noreffer" href="https://cre
 - 上海电信十全十美千兆套餐(升级千兆时光猫换成了SDN设备)
 - 2路电信IPTV
 - 1路固定电话
-- 1台AC 68u
+- 1台AC 86u
 - 1台威联通TS-551
 - 1台HP Microserver Gen8
-- 1台多口小主机
+- 1台多网口小主机
 - iMac/Laptop/智能设备若干
 - 有非固定公网IP
 
@@ -57,15 +57,32 @@ license: '<a rel="license external nofollow noopener noreffer" href="https://cre
 ## 不桥接怎么做端口映射？
 
 
-光猫拨号，下面再接路由器的话，家庭网络就有两级NAT了。这种情况下，常规的方法是做两次端口映射。
-比如，我有一台群晖。
-[ ]TODO: 添加图例
+光猫拨号，下面再接路由器的话，家庭网络就有两级NAT了(第一次NAT在电信光猫，第二次NAT在家中主路由)。通常情况下，有几次NAT就要做几次端口映射。
 
-我的做法是设置DMZ
+{{< figure src="img/network.drawio.png" title="光猫拨号下的家庭网络" >}}
 
-> 在一些家用路由器中，DMZ是指一部所有端口都暴露在外部网络的内部网络主机，除此以外的端口都被转发。
+假如我想要在外网能够访问图中群晖的管理页面的话，需要做两次端口映射。
+1. 在电信光猫上，开启tcp 5000，转发到IP 192.168.1.111
+2. 在主路由上，开启tcp 5000，转发到IP 192.168.2.200
 
-[ ]TODO: 添加图例
+很显然，这太麻烦了。每个端口都要设置两次，之后改动的话也要改两个地方。我的做法是设置DMZ。
+
+> 在一些家用路由器中，DMZ是指一部所有端口都暴露在外部网络的内部网络主机，除此以外的端口都被转发。——摘自维基百科
+
+上海电信估计也是让搞光猫桥接的大爷们给整烦了，直接在配套的手机应用中加了设置**DMZ主机**的功能。
+
+{{< figure src="img/dmz.jpeg" title="上海电信 DMZ主机设置" >}}
+
+设置完DMZ后，家庭网络变成了下图的样子。（对，看起来和原来没有任何差别！）
+
+{{< figure src="img/network-dmz.drawio.png" title="光猫拨号并设置DMZ的家庭网络" >}}
+
+通俗的来讲，被设置为DMZ主机的那台设备会代替光猫成为家庭网络的对外代表。原来从外部而来的访问都是光猫处理，但是现在光猫直接就交给DMZ主机去处理了。
+所以，现在我想要在外网能够访问图中群晖的管理页面的话，需要做一次端口映射就好了。
+
+1. 在主路由上，开启tcp 5000，转发到IP 192.168.2.200
+
+总结一下，开启DMZ给家里的主要路由器，使用体验上和光猫桥接路由器拨号没有太大差异。但是省去了光猫桥接模式下配置IPTV/固定电话的麻烦。
 
 ## DMZ下的upnp感觉有问题？
 
@@ -73,7 +90,7 @@ license: '<a rel="license external nofollow noopener noreffer" href="https://cre
 
 甜糖检测时候的日志如下：
 
-```
+```xml
 2021-01-15 00:35:33.671 GetExternalIpAddress send POST /ctl/IPConn HTTP/1.1
 HOST: 192.168.2.1:5000
 Content-Length: 274
@@ -98,7 +115,7 @@ Ext:
 <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/" s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"><s:Body><u:GetExternalIPAddressResponse xmlns:u="urn:schemas-upnp-org:service:WANIPConnection:1"><NewExternalIPAddress>192.168.2.1</NewExternalIPAddress></u:GetExternalIPAddressResponse></s:Body></s:Envelope>
 2021-01-15 00:35:33.677 router ip = 192.168.2.1,external ip = 192.168.2.1
 ```
-**external ip = 192.168.2.1**，外部IP看着不对啊！
+很明显，可以发现，**external ip = 192.168.2.1**，外部IP看着不对啊！
 
 翻看一下miniupnpd的文档，有两项值得注意：
 
@@ -106,13 +123,19 @@ Ext:
 
 - **external_ip**:Manually specified external IP - if not specified the default ipv4 address of the external interface is used.
 
-很显然，这是DMZ带来的副作用。桥接后路由器拨号的话，路由器的WAN口可以正常地得到外网地址。但是在DMZ之后的路由器，它的WAN口获得的是光猫给分配的内网地址。被指定为DMZ的那个路由器，它接管了几乎所有的网络入口功能，它是事实上对外的唯一网关，但是它自己不知道！它依然认为自己只是一个卑微的二级路由器而已。
-我的做法是，写个插件(包含在slim-wrt中，名字叫boostupnp)，让它知道自己多厉害。
+很显然，这是DMZ带来的副作用。
+再次回顾一下光猫拨号并设置DMZ的家庭网络结构。
+
+{{< figure src="img/network-dmz.drawio.png" title="光猫拨号并设置DMZ的家庭网络" >}}
+
+桥接后路由器拨号的话，路由器的WAN口可以正常地得到外网地址。但是在DMZ之后的路由器，它的WAN口获得的是光猫给分配的内网地址。被指定为DMZ主机的那个路由器，它接管了几乎所有的网络入口功能，它是事实上对外的唯一网关，但是它自己不知道！它依然认为自己只是一个卑微的二级路由器而已。
+
+我的做法是，写个插件(包含在slim-wrt中，名字叫boostupnp)，让它知道自己多厉害，让它对外宣告事实上的外部IP地址。
 
 - 指定external_iface和internal_iface
 - 指定真实的external_ip
 
-![0f8095784d002b9e95186fcfeb7517ac.png](img/d07f05b3c8354471a21f0104991892c8.png)
+{{< figure src="img/d07f05b3c8354471a21f0104991892c8.png" title="boostupnp设置界面" >}}
 
 使用插件之后upnpd配置如下，补全了原来没有的**external_ip**和**external_iface**
 
@@ -151,23 +174,23 @@ config perm_rule
 
 配合boostupnp，我的upnp环境终于得到了CDN挖矿软件的认可。
 
-![](img/d9740360f2744ec1a5d5b21973d244e3.documentsdocumentima)
+{{< figure src="img/upnp.png" title="来自挖矿软件的认可" >}}
+
 
 
 ## NAT type要选择哪种？
 
 在Merlin系统上，NAT type有两种选择，全锥型和对称型。直观来说，任天堂Switch的网络检测里，NAT Type A对应的就是全锥形；B对应的是对称形。AB两种都能进行联机游戏，但是普遍认为A好于B，B好于C和D，C和D几乎没法玩。
 
-![d9d6357589795d21d095723a498125fe.png](img/a3ea677160d14bc2b0e092398b2768b8.png)
+{{< figure src="img/a3ea677160d14bc2b0e092398b2768b8.png" title="Switch网络测试" >}}
 
-Play Station,XBox也有类似的要求。要求最过分的是那些CDN挖矿软件，他们希望有全锥型，直接挖矿的机器拨号更佳，最好直接把矿机塞到电信机房去。
+Play Station,XBox也有类似的要求。要求最严格的是那些CDN挖矿软件，他们希望有全锥型，如果挖矿的机器直接拨号更佳，甚至最好直接把矿机塞到电信机房去。
 
 切换到了Openwrt后发现，它根本没有全锥型这个选项。Slim-wrt里把官方没加的Fullcone功能给加上了。
 
-![2431b9b0078ea974b59ed3c6e495e6b4.png](img/3defe5cf1e1f496caeb27bd6a067b48e.png)
+{{< figure src="img/3defe5cf1e1f496caeb27bd6a067b48e.png" title="Slim-wrt的NAT设置" >}}
 
 总结来说，要玩联机游戏，有P2P(BT/PT)需求，尽量上全锥型。没有需求的话，哪种类型都无所谓。
-
 
 ## 有没有必要做双软路由？
 
